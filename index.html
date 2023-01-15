@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <title>Type Conversion — JavaScript</title>
+
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body class="base__body">
+  <header class="header">
+    <div class="header__inner header__inner--main font-theme font-theme--code">
+      <span class="header__logo">
+        JavaScript
+      </span>
+
+      <div class="header__toggle">
+        <span class="menu-toggle__inner menu-toggle__inner--open">
+          <span class="menu-toggle__icon menu-toggle__icon--open">
+            <span class="menu-toggle__dot"></span>
+            <span class="menu-toggle__dot"></span>
+            <span class="menu-toggle__dot"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc">
+    <main class="doc__main font-theme">
+      <article class="doc__article article article--with-cover">
+        <header class="article__header">
+          <div class="article__header-inner doc__wrapper">
+            <h1 class="article__title" itemprop="headline">
+              Type Conversion
+            </h1>
+          </div>
+        </header>
+
+        <div class="article__layout">
+          <div class="article__aside">
+            <div class="article__nav article-nav">
+              <div class="article-nav__content">
+                <div class="toc">
+                  <ol class="toc__list base-list">
+                    <li class="toc__item"><a class="toc__link link" href="#kratko">Кратко</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#primitivnye-tipy">Примитивные типы</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#obekty">Объекты</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#funkcii">Функции</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#typeof">typeof</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#preobrazovanie-tipov">Преобразование типов</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#neyavnoe-preobrazovanie-tipov">Неявное преобразование типов</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#na-primerah">На примерах</a></li>
+                    <li class="toc__item"><a class="toc__link link" href="#strogoe-i-nestrogoe-ravenstvo">Строгое и нестрогое равенство</a></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="article__content doc__wrapper">
+            <div class="article__content-inner content">
+              <div class="article-heading article-heading--level-2" id="kratko" tabindex="-1">
+                <h2 class="article-heading__title">Кратко</h2>
+                <a class="article-heading__link link" href="#kratko">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Кратко"</span>
+                </a>
+              </div>
+
+              <p>Приведение (или преобразование) типов — это процесс конвертации значения из одного типа в другой.</p>
+              <p>В JavaScript типы можно преобразовывать явно и неявно.</p>
+              <p>Когда мы вызываем функцию, чтобы получить конкретный тип — это явное преобразование:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">const</span> x <span class="token operator">=</span> <span class="token string">'4'</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+
+      <span class="token keyword">const</span> y <span class="token operator">=</span> <span class="token number">4</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+    </code>
+  </span>
+</pre>
+              <p>Сравнение бывает строгим и нестрогим. При строгом сравнении (<code class="inline-code code-fix font-theme font-theme--code">=<wbr>=<wbr><wbr>=<wbr></code>) интерпретатор учитывает типы сравниваемых значений.</p>
+              <p>Когда же мы <em>сравниваем значения нестрого</em> между собой с помощью <code class="inline-code code-fix font-theme font-theme--code">=<wbr>=<wbr></code>, JavaScript приводит типы самостоятельно:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">==</span> <span class="token string">'5'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">===</span> <span class="token string">'5'</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+    </code>
+  </span>
+</pre>
+              <p>Чтобы понять, почему так, нам надо сперва разобраться, какие типы в JS есть.</p>
+              <p>Сперва проведём границу между примитивными типами, объектами и другими.</p>
+
+              <div class="article-heading article-heading--level-2" id="primitivnye-tipy" tabindex="-1">
+                <h2 class="article-heading__title">Примитивные типы</h2>
+                <a class="article-heading__link link" href="#primitivnye-tipy">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Примитивные типы"</span>
+                </a>
+              </div>
+
+              <p>В JavaScript примитивные типы следующие:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token comment">// 1. Undefined</span>
+      <span class="token keyword">typeof</span> <span class="token keyword nil">undefined</span> <span class="token operator">===</span> <span class="token string">'undefined'</span>
+
+      <span class="token comment">// 2. Boolean, логический</span>
+      <span class="token keyword">typeof</span> <span class="token boolean">true</span> <span class="token operator">===</span> <span class="token string">'boolean'</span>
+      <span class="token keyword">typeof</span> <span class="token boolean">false</span> <span class="token operator">===</span> <span class="token string">'boolean'</span>
+
+      <span class="token comment">// 3. Number, число</span>
+      <span class="token keyword">typeof</span> <span class="token number">42</span> <span class="token operator">===</span> <span class="token string">'number'</span>
+      <span class="token keyword">typeof</span> <span class="token number">4.2</span> <span class="token operator">===</span> <span class="token string">'number'</span>
+      <span class="token keyword">typeof</span> <span class="token operator">-</span><span class="token number">42</span> <span class="token operator">===</span> <span class="token string">'number'</span>
+      <span class="token keyword">typeof</span> <span class="token number">Infinity</span> <span class="token operator">===</span> <span class="token string">'number'</span>
+      <span class="token keyword">typeof</span> <span class="token operator">-</span><span class="token number">Infinity</span> <span class="token operator">===</span> <span class="token string">'number'</span>
+
+      <span class="token comment">// 4. String, строка</span>
+      <span class="token keyword">typeof</span> <span class="token string">''</span> <span class="token operator">===</span> <span class="token string">'string'</span>
+      <span class="token keyword">typeof</span> <span class="token string">'string'</span> <span class="token operator">===</span> <span class="token string">'string'</span>
+      <span class="token keyword">typeof</span> <span class="token string">'number'</span> <span class="token operator">===</span> <span class="token string">'string'</span>
+      <span class="token keyword">typeof</span> <span class="token string">'boolean'</span> <span class="token operator">===</span> <span class="token string">'string'</span>
+
+      <span class="token comment">// 5. Symbol, символ, ES6</span>
+      <span class="token keyword">typeof</span> <span class="token known-class-name class-name">Symbol</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'symbol'</span>
+
+      <span class="token comment">// 6. BigInt, большое число, ES6</span>
+      <span class="token keyword">typeof</span> <span class="token number">9007199254740991n</span> <span class="token operator">===</span> <span class="token string">'bigint'</span>
+      <span class="token keyword">typeof</span> <span class="token known-class-name class-name">BigInt</span><span class="token punctuation">(</span><span class="token number">9007199254740991</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'bigint'</span>
+
+      <span class="token comment">// 7. Null</span>
+      <span class="token keyword">typeof</span> <span class="token keyword null nil">null</span> <span class="token operator">===</span> <span class="token string">'object'</span>
+    </code>
+  </span>
+</pre>
+              <p>Примитивные типы — это такие типы, значения которых можно только перезаписать, но нельзя изменить.</p>
+              <p>Например, если мы создали переменную со значением <code class="inline-code code-fix font-theme font-theme--code">42</code>, изменить это значение будет нельзя. Мы сможем его только полностью перезаписать:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">let</span> theAnswerToUltimateQuestion <span class="token operator">=</span> <span class="token number">42</span>
+      theAnswerToUltimateQuestion <span class="token operator">=</span> <span class="token number">43</span>
+      <span class="token comment">// Новое значение полностью перезаписало старое;</span>
+      <span class="token comment">// старое собрано сборщиком мусора и забыто.</span>
+
+      <span class="token keyword">let</span> theAnswers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">]</span>
+      theAnswers<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">142</span>
+      <span class="token comment">// Теперь значение переменной [142, 43, 44];</span>
+      <span class="token comment">// мы не перезаписали его полностью, а лишь изменили часть.</span>
+    </code>
+  </span>
+</pre>
+              <p>Этот механизм связан с тем, как значения переменных хранятся в памяти. Мы не пойдём слишком глубоко в эту тему, но, грубо говоря, примитивные типы «ссылаются на одно и то же значение в памяти», а не примитивные — на разные.</p>
+              <p>Из-за этого, например, примитивы можно сравнивать по значению:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">const</span> a <span class="token operator">=</span> <span class="token number">5</span>
+      <span class="token keyword">const</span> b <span class="token operator">=</span> <span class="token number">5</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span> <span class="token comment">// true</span>
+    </code>
+  </span>
+</pre>
+              <p>А вот не примитивы — не получится:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">const</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+      <span class="token keyword">const</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span> <span class="token comment">// false</span>
+    </code>
+  </span>
+</pre>
+              <p>Даже несмотря на то, что массивы содержат одни и те же числа, при сравнении они не являются «одинаковыми». Когда JavaScript сравнивает <code class="inline-code code-fix font-theme font-theme--code">a</code> и <code class="inline-code code-fix font-theme font-theme--code">b</code>, он, грубо говоря, «сравнивает места в памяти, на которые ссылаются эти переменные». У не примитивов, эти места — разные, из-за чего они считаются неодинаковыми.</p>
+
+              <div class="article-heading article-heading--level-2" id="obekty" tabindex="-1">
+                <h2 class="article-heading__title">Объекты</h2>
+                <a class="article-heading__link link" href="#obekty">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Объекты"</span>
+                </a>
+              </div>
+
+              <p>Объекты в JavaScript используются для хранения коллекций значений.</p>
+              <p>Массивы (Array) в JS — тоже объекты.</p>
+              <p>Как мы уже говорили, не примитивы сравниваются по ссылке, а не по значению. Объекты и массивы — это как раз не примитивы.</p>
+              <p>У объектов в JavaScript собственный тип — <code class="inline-code code-fix font-theme font-theme--code">object</code>.</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">const</span> keyValueCollection <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">key</span><span class="token operator">:</span> <span class="token string">'value'</span> <span class="token punctuation">}</span>
+      <span class="token keyword">typeof</span> keyValueCollection <span class="token operator">===</span> <span class="token string">'object'</span>
+
+      <span class="token keyword">const</span> listCollection <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+      <span class="token keyword">typeof</span> listCollection <span class="token operator">===</span> <span class="token string">'object'</span>
+    </code>
+  </span>
+</pre>
+              <p>У <code class="inline-code code-fix font-theme font-theme--code">null</code> оператор <code class="inline-code code-fix font-theme font-theme--code">typeof</code> возвращает <code class="inline-code code-fix font-theme font-theme--code">'object'</code>, хотя это тоже примитив:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token keyword null nil">null</span> <span class="token operator">===</span> <span class="token string">'object'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+    </code>
+  </span>
+</pre>
+              <div class="article-heading article-heading--level-2" id="funkcii" tabindex="-1">
+                <h2 class="article-heading__title">Функции</h2>
+                <a class="article-heading__link link" href="#funkcii">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Функции"</span>
+                </a>
+              </div>
+
+              <p>У функций в JavaScript тоже тип — <code class="inline-code code-fix font-theme font-theme--code">object</code>, хотя <code class="inline-code code-fix font-theme font-theme--code">typeof</code> возвращает <code class="inline-code code-fix font-theme font-theme--code">'function'</code>:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token keyword">function</span> <span class="token function">simpleFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> simpleFunction <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+
+      <span class="token keyword">const</span> <span class="token function-variable function">assignedFunction</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> assignedFunction <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+
+      <span class="token keyword">const</span> <span class="token function-variable function">arrowFunction</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> arrowFunction <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+    </code>
+  </span>
+</pre>
+              <div class="article-heading article-heading--level-2" id="typeof" tabindex="-1">
+                <h2 class="article-heading__title"><code class="article-heading__code code-fix font-theme font-theme--code">typeof</code></h2>
+                <a class="article-heading__link link" href="#typeof">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "typeof"</span>
+                </a>
+              </div>
+
+              <p>Оператор <code class="inline-code code-fix font-theme font-theme--code">typeof</code> <a class="link" href="https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-typeof-operator">возвращает не непосредственно «тип», а строку</a>. Для всех примитивов, кроме <code class="inline-code code-fix font-theme font-theme--code">null</code>, этой строкой будет название этого примитива.</p>
+              <p>Для объектов он сначала проверит, <a class="link" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#function-object">можно ли его «вызвать»</a>. Функции — это как раз такие объекты, поэтому оператор возвращает <code class="inline-code code-fix font-theme font-theme--code">function</code>.</p>
+              <p>Несмотря на то, что <code class="inline-code code-fix font-theme font-theme--code">typeof</code> не всегда возвращает то, что мы бы могли ожидать, им удобно пользоваться в некоторых случаях в коде, например, для определения функций.</p>
+
+              <div class="article-heading article-heading--level-2" id="preobrazovanie-tipov" tabindex="-1">
+                <h2 class="article-heading__title">Преобразование типов</h2>
+                <a class="article-heading__link link" href="#preobrazovanie-tipov">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Преобразование типов"</span>
+                </a>
+              </div>
+
+              <p>Теперь, когда мы разобрались с типами, посмотрим, как мы можем преобразовывать значения одного типа в значения другого.</p>
+              <p>В JavaScript существует лишь 3 типа конвертации: в строку, в число или в логическое значение.</p>
+              <p>Чтобы конвертировать значение в эти типы, можно воспользоваться одноимёнными функциями:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span> <span class="token comment">// Приводит к строке.</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token string">'42'</span><span class="token punctuation">)</span> <span class="token comment">// Приводит к числу.</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span> <span class="token comment">// Приводит к логическому значению.</span>
+    </code>
+  </span>
+</pre>
+              <p>Приведение к строке, числу и логическому значению можно проводить над любыми значениями:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token comment">// К строке:</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span> <span class="token comment">// '123'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">12.3</span><span class="token punctuation">)</span> <span class="token comment">// '-12.3'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span> <span class="token comment">// 'null'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token comment">// 'undefined'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment">// 'true'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token comment">// 'false'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// 'function () {}'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// '[object Object]'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">key</span><span class="token operator">:</span> <span class="token number">42</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// '[object Object]'</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// ''</span>
+      <span class="token known-class-name class-name">String</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// '1,2'</span>
+    </code>
+  </span>
+</pre>
+              <p>
+                К числу также можно пытаться приводить любые значения. Если JavaScript не сможет привести какое-то значение к числу, мы получим
+                <code class="inline-code code-fix font-theme font-theme--code">NaN</code> — особое значение, представляющее не-число (Not-a-Number).
+              </p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token comment">// К числу:</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span> <span class="token comment">// 123</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token string">'123.4'</span><span class="token punctuation">)</span> <span class="token comment">// 123.4</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token string">'123,4'</span><span class="token punctuation">)</span> <span class="token comment">// NaN</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment">// 0</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span> <span class="token comment">// 0</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token comment">// NaN</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment">// 1</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token comment">// 0</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// NaN</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// NaN</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// 0</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// 1</span>
+      <span class="token known-class-name class-name">Number</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// NaN</span>
+
+      <span class="token comment">// Number от пустого массива — 0,</span>
+      <span class="token comment">// от массива с одним числом — это число</span>
+      <span class="token comment">// и от массива с несколькими числами — NaN.</span>
+    </code>
+  </span>
+</pre>
+              <p>К логическому также можно приводить любые значения:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token string">'false'</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">42</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token number">NaN</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token comment">// false</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">key</span><span class="token operator">:</span> <span class="token number">42</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+      <span class="token known-class-name class-name">Boolean</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+
+      <span class="token comment">// Всё, кроме пустой строки, нуля, NaN, null и undefined есть true.</span>
+    </code>
+  </span>
+</pre>
+              <div class="article-heading article-heading--level-2" id="neyavnoe-preobrazovanie-tipov" tabindex="-1">
+                <h2 class="article-heading__title">Неявное преобразование типов</h2>
+                <a class="article-heading__link link" href="#neyavnoe-preobrazovanie-tipov">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Неявное преобразование типов"</span>
+                </a>
+              </div>
+
+              <p>
+                В секции выше мы преобразовывали типы «руками», с помощью функций. Но JavaScript может делать такие преобразования за нас самостоятельно. (Из-за чего в языке появляется много
+                <a class="link" href="https://github.com/denysdovhan/wtfjs">странностей</a>,
+                за которые его
+                <a class="link" href="https://www.destroyallsoftware.com/talks/wat">не очень сильно любят</a>.)
+              </p>
+              <p>
+                Такая типизация, при которой тип значения определяется во время присвоения, а по ходу программы может меняться, — называется
+                <a class="link" href="https://ru.wikipedia.org/wiki/%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F_%D1%82%D0%B8%D0%BF%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F">динамической</a>.
+              </p>
+
+              <p>Неявное преобразование происходит, когда мы заставляем JavaScript работать со значениями разных типов. Например, если мы хотим «сложить» число и строку:</p>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token number">5</span> <span class="token operator">+</span> <span class="token string">'3'</span> <span class="token operator">===</span> <span class="token string">'53'</span>
+      <span class="token number">5</span> <span class="token operator">-</span> <span class="token string">'3'</span> <span class="token operator">===</span> <span class="token number">2</span>
+      <span class="token number">5</span> <span class="token operator">+</span> <span class="token string">'-3'</span> <span class="token operator">===</span> <span class="token string">'5-3'</span>
+      <span class="token number">5</span> <span class="token operator">-</span> <span class="token operator">+</span><span class="token number">3</span> <span class="token operator">===</span> <span class="token number">2</span>
+      <span class="token number">5</span> <span class="token operator">+</span> <span class="token operator">-</span><span class="token number">3</span> <span class="token operator">===</span> <span class="token number">2</span>
+    </code>
+  </span>
+</pre>
+              <p>Дело в том, как JavaScript пробует эти два типа «сопоставить» друг с другом, чтобы с ними работать.</p>
+              <p>Вначале посмотрим на примитивы.</p>
+
+              <ol>
+                <li>
+                  Интерпретатор приведёт примитивные значения к логическим, если мы используем <code class="inline-code code-fix font-theme font-theme--code">&amp;&amp;</code>
+                  или <code class="inline-code code-fix font-theme font-theme--code">||</code>.
+                </li>
+                <li>
+                  К строке, если мы используем <code class="inline-code code-fix font-theme font-theme--code">+</code>, когда один из операндов — строка.
+                </li>
+                <li>
+                  К числу, если:
+                  <ol>
+                    <li>
+                      мы используем операторы сравнения:
+                      <code class="inline-code code-fix font-theme font-theme--code">&lt;</code>,
+                      <code class="inline-code code-fix font-theme font-theme--code">&lt;<wbr>=<wbr></code>,
+                      <code class="inline-code code-fix font-theme font-theme--code">&gt;</code>,
+                      <code class="inline-code code-fix font-theme font-theme--code">&gt;<wbr>=<wbr></code>;
+                    </li>
+                    <li>
+                      используем арифметические операции:
+                      <code class="inline-code code-fix font-theme font-theme--code">-</code>,
+                      <code class="inline-code code-fix font-theme font-theme--code">+</code> (за исключением пункта 2),
+                      <code class="inline-code code-fix font-theme font-theme--code">/</code>,
+                      <code class="inline-code code-fix font-theme font-theme--code">*</code>.
+                    </li>
+                    <li>
+                      используем унарный плюс: <code class="inline-code code-fix font-theme font-theme--code">+'2' <wbr>=<wbr><wbr>=<wbr><wbr>=<wbr> 2</code>;
+                    </li>
+                    <li>
+                      используем оператор нестрогого сравнения: <code class="inline-code code-fix font-theme font-theme--code">=<wbr>=<wbr></code>.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+
+              <p>Но примитивами дело не заканчивается, JavaScript также неявно приводит и не примитивные значения.</p>
+
+              <p>
+                Интерпретатор приводит их к логическому, если мы используем <code class="inline-code code-fix font-theme font-theme--code">&amp;&amp;</code>
+                или <code class="inline-code code-fix font-theme font-theme--code">||</code>.
+                Объекты — всегда <code class="inline-code code-fix font-theme font-theme--code">true</code>.
+              </p>
+              <p>
+                С числом и строкой всё немного интереснее. Чтобы определить, к строке приводить значение или к числу, JavaScript смотрит, какой из двух методов (<code class="inline-code code-fix font-theme font-theme--code">value<wbr>Of<wbr>(<wbr><wbr>)<wbr></code>
+                и <code class="inline-code code-fix font-theme font-theme--code">to<wbr>String<wbr>(<wbr><wbr>)<wbr></code>) в текущем объекте объявлен.
+              </p>
+
+              <ol>
+                <li>
+                  Если перед нами не объект <code class="inline-code code-fix font-theme font-theme--code">Date</code>,
+                  то метод <code class="inline-code code-fix font-theme font-theme--code">value<wbr>Of<wbr>(<wbr><wbr>)<wbr></code>
+                  вызывается, обычно, первым (если не сильно углубляться в <a class="link" href="https://es5.github.io/#x8.12.8">детали спецификации</a>).
+                </li>
+
+                <li>Если возвращённое после этого значение — это примитив, то возвращается оно.</li>
+
+                <li>
+                  Если нет, то вызывается другой метод (если <code class="inline-code code-fix font-theme font-theme--code">value<wbr>Of<wbr>(<wbr><wbr>)<wbr></code>
+                  не вернул примитив, то вызывается <code class="inline-code code-fix font-theme font-theme--code">to<wbr>String<wbr>(<wbr><wbr>)<wbr></code> и наоборот).
+                </li>
+
+                <li>Если после этого вернулся примитив, возвращается он.</li>
+
+                <li>
+                  Если даже после этого не вернулся примитив, то будет ошибка <code class="inline-code code-fix font-theme font-theme--code">Uncaught TypeError<wbr>:<wbr> Cannot convert object to primitive value</code>.
+                </li>
+              </ol>
+
+              <div class="article-heading article-heading--level-2" id="na-primerah" tabindex="-1">
+                <h2 class="article-heading__title">На примерах</h2>
+                <a class="article-heading__link link" href="#na-primerah">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "На примерах"</span>
+                </a>
+              </div>
+
+<pre class="block-code font-theme font-theme--code" data-lang="js">
+  <span class="block-code__inner" tabindex="0">
+    <code class="block-code__highlight">
+      <span class="token comment">// 1. Простой объект</span>
+      <span class="token keyword">const</span> obj1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      obj1<span class="token punctuation">.</span><span class="token method function property-access">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// {}</span>
+      obj1<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// '[object Object]'</span>
+
+      <span class="token comment">// Чтобы «сложить» число с объектом,</span>
+      <span class="token comment">// вначале будет вызван obj1.valueOf().</span>
+      <span class="token comment">// Он вернёт объект (непримитив),</span>
+      <span class="token comment">// после чего будет вызван obj1.toString().</span>
+      <span class="token number">1</span><span class="token operator"> + </span> obj1
+
+      <span class="token comment">// 1 + '[object Object]'</span>
+      <span class="token comment">// '1' + '[object Object]'</span>
+      <span class="token comment">// '1[object Object]'</span>
+
+      <span class="token comment">// 2. Объект с указанным .valueOf()</span>
+      <span class="token keyword">const</span> obj2 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      obj2<span class="token punctuation">.</span><span class="token method-variable function-variable method function property-access">valueOf</span> <span class="token operator">=</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> <span class="token string">'obj2'</span>
+      obj2<span class="token punctuation">.</span><span class="token method function property-access">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 'obj2'</span>
+      obj2<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// '[object Object]'</span>
+
+      <span class="token comment">// Теперь, когда мы объявили метод .valueOf(),</span>
+      <span class="token comment">// при вызове он будет возвращать строку.</span>
+      <span class="token comment">// Так как строка — примитив,</span>
+      <span class="token comment">// она и будет использована при «сложении».</span>
+      <span class="token number">1</span> <span class="token operator">+</span> obj2 <span class="token comment">// 1 + 'obj2'</span>
+
+      <span class="token comment">// '1' + 'obj2'</span>
+      <span class="token comment">// '1obj2'</span>
+
+      <span class="token comment">// 2.1. Если же мы будем возвращать число</span>
+      <span class="token keyword">const</span> obj2 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+      obj2<span class="token punctuation">.</span><span class="token method-variable function-variable method function property-access">valueOf</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> <span class="token number">42</span>
+      obj2<span class="token punctuation">.</span><span class="token method function property-access">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 42</span>
+      obj2<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// '[object Object]'</span>
+
+      <span class="token number">1</span><span class="token operator">+</span> obj2
+
+      <span class="token comment">// 1 + 42</span>
+      <span class="token comment">// 43</span>
+
+      <span class="token comment">// 3. Даты</span>
+      <span class="token keyword">const</span> date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      date<span class="token punctuation">.</span><span class="token method function property-access">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 1467864738527</span>
+      date<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 'Sun Sep 15 2019...'</span>
+
+      <span class="token comment">// У дат приоритет методов обратный:</span>
+      <span class="token comment">// то есть вначале будет вызываться .toString(),</span>
+      <span class="token comment">// и только после него — .valueOf().</span>
+      <span class="token number">1</span> <span class="token operator">+</span> date
+
+      <span class="token comment">// 1 + 'Sun Sep 15 2019...'</span>
+      <span class="token comment">// '1' + 'Sun Sep 15 2019...'</span>
+      <span class="token comment">// '1Sun Sep 15 2019...'</span>
+    </code>
+  </span>
+</pre>
+              <div class="article-heading article-heading--level-2" id="strogoe-i-nestrogoe-ravenstvo" tabindex="-1">
+                <h2 class="article-heading__title">Строгое и нестрогое равенство</h2>
+                <a class="article-heading__link link" href="#strogoe-i-nestrogoe-ravenstvo">
+                  <svg class="article-heading__icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+
+                  <span class="visually-hidden">Секция статьи "Строгое и нестрогое равенство"</span>
+                </a>
+              </div>
+
+              <p>
+                Неявное преобразование также используется, когда мы сравниваем значения через нестрогое равенство
+                <code class="inline-code code-fix font-theme font-theme--code">=<wbr>=<wbr></code>.
+              </p>
+              <p>
+                В отличие от строгого равенства (<code class="inline-code code-fix font-theme font-theme--code">=<wbr>=<wbr><wbr>=<wbr></code>),
+                в нём интерпретатор пробует привести типы к одному, чтобы сравнить.
+              </p>
+              <p>
+                Полный алгоритм <a class="link" href="https://262.ecma-international.org/5.1/#sec-11.9.3">сложный</a>.
+                Для удобства его свели в <a class="link" href="https://dorey.github.io/JavaScript-Equality-Table/unified/">большую матрицу</a>,
+                которая показывает, «что чему равно» при строгом и нестрогом равенстве
+              </p>
+
+              <p>Вот таблица нестрогого равенства (зелёным отмечены значения, которые «равны»):</p>
+
+              <picture>
+                <source type="image/webp" srcset="img/1-300w.webp 300w, img/1-600w.webp 600w, img/1-1200w.webp 1200w, img/1-2200w.webp 2200w, img/1-2880w.webp 2880w" sizes="(min-width: 1680px) 1087px, (min-width: 1366px) calc(75vw - 2 * 20px), calc(100vw - 2 * 10px)">
+                <source type="image/png" srcset="img/1-300w.png 300w, img/1-600w.png 600w, img/1-1200w.png 1200w, img/1-2200w.png 2200w, img/1-2880w.png 2880w" sizes="(min-width: 1680px) 1087px, (min-width: 1366px) calc(75vw - 2 * 20px), calc(100vw - 2 * 10px)">
+                <img src="img/1-1200w.png" alt="Таблица нестрогого равенства" width="1200" height="1200">
+              </picture>
+
+              <p>А вот — для строгого:</p>
+
+              <picture>
+                <source type="image/webp" srcset="img/2-300w.webp 300w, img/2-600w.webp 600w, img/2-1200w.webp 1200w, img/2-2200w.webp 2200w, img/2-2880w.webp 2880w" sizes="(min-width: 1680px) 1087px, (min-width: 1366px) calc(75vw - 2 * 20px), calc(100vw - 2 * 10px)">
+                <source type="image/png" srcset="img/2-300w.png 300w, img/2-600w.png 600w, img/2-1200w.png 1200w, img/2-2200w.png 2200w, img/2-2880w.png 2880w" sizes="(min-width: 1680px) 1087px, (min-width: 1366px) calc(75vw - 2 * 20px), calc(100vw - 2 * 10px)">
+                <img src="img/2-1200w.png" alt="Таблица строгого равенства" width="1200" height="1200">
+              </picture>
+
+              <p>Хорошей практикой считается использовать только строгое сравнение, чтобы избежать неявного преобразования типов при сравнении.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+  <script src="js/primitives.js"></script>
+  <script src="js/objects.js"></script>
+  <script src="js/non-strict.js"></script>
+</body>
+</html>
